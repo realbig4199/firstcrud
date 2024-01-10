@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+  <body class="grey-bg">
+    <%- include('nav.ejs') %>
+
+    <form class="form-box" action="/add" method="POST">
+      <!-- action : url, method : 말 그대로 method -->
+      <h4>글쓰기</h4>
+      <input name="title" placeholder="제목을 입력하세요." />
+      <!-- name 속성이 있어야 서버로 데이터들이 전송됨-->
+      <input name="content" placeholder="내용을 입력하세요." />
+      <!-- 사용자 ID를 숨겨진 필드로 추가 -->
+      <% if (user) { %>
+      <input type="hidden" name="userId" value="<%= user._id %>" />
+      <% } %>
+
+      <button type="submit">전송</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+  <body class="grey-bg">
+    <%- include('nav.ejs') %>
+
+    <form class="form-box" action="/edit/<%= document._id %>" method="POST">
+      <h4>수정하기</h4>
+      <input name="title" value="<%= document.title %>" />
+      <input name="content" value="<%= document.content %>" />
+      <button type="submit">수정</button>
+    </form>
+  </body>
+</html>

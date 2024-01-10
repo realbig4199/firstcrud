@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+  <body class="grey-bg">
+    <!-- ejs 파일간의 연결 : include -->
+    <%- include('nav.ejs') %>
+
+    <div class="white-bg">
+      <% for (let i = 0; i < 글목록.length; i++) { %>
+      <div class="list-box">
+        <h4>
+          <a href="/detail/<%= 글목록[i]._id %>"><%= 글목록[i].title %></a>
+          <a href="/edit/<%= 글목록[i]._id %>">✏️</a>
+          <span class="delete" data-id="<%= 글목록[i]._id %>">🗑️</span>
+        </h4>
+        <p><%= 글목록[i].content %></p>
+      </div>
+      <% } %>
+    </div>
+
+    <script>
+      for (let i = 0; i < "<%= 글목록.length %>"; i++) {
+        // 쿼리 셀렉터로 클래스 delete를 찾고 거기서 click 이벤트가 발생할 경우
+        document.querySelectorAll(".delete")[i].addEventListener("click", function (e) {
+          // e.target 대신 this를 사용하여, 이벤트가 바인딩된 요소에 접근합니다.
+          // fetch로 요청을 날림 (기본은 get 요청)
+          fetch("/doc?docid=" + e.target.dataset.id, { method: "DELETE" }) // 쿼리 스트링 활용
+            .then((response) => {
+              if (response.status === 200) {
+                return response.text(); // 서버가 200 OK 응답을 보내면 텍스트를 반환합니다.
+              } else {
+                // 서버가 에러 코드를 전송했을 때 실행할 코드
+                alert("서버 에러 발생: " + response.statusText);
+                throw new Error("Server responded with status: " + response.status);
+              }
+            })
+            .then((text) => {
+              // 성공 시 실행할 코드
+              alert(text);
+              e.target.parentElement.parentElement.style.display = "none";
+            })
+            .catch((error) => {
+              // 인터넷 문제 등으로 실패 시 실행할 코드
+              alert("삭제에 실패했습니다: " + error.message);
+              console.error("Fetch error:", error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
